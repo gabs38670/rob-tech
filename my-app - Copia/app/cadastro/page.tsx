@@ -100,6 +100,27 @@ export default function Cadastro(){
                                 </button>
                             </form>
                         </div>
+                         <div className='table-container' style={{ marginTop: '30px'}}>
+                            <h3>Funcionários Cadastrados</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Cargo</th>
+                                        <th>Setor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {listFuncionarios.map((funcionario) => (
+                                        <tr key={funcionario.id}>
+                                            <td>{funcionario.nome}</td>
+                                            <td>{funcionario.cargo}</td>
+                                            <td><span style={{background: '#f1f5f9', padding: '4px 8px', borderRadius: '4px'}}>{funcionario.setor}</span></td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
                 </div>

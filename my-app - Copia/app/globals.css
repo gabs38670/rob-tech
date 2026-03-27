@@ -261,3 +261,8 @@ input:focus {
 .btn-submit:hover {
   background: #2563eb;
 }
+/* Estilos tabela */
+.table-container { margin-top: 30px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { padding: 12px; border-bottom: 2px solid var(--border); color: var(--text-muted); font-size: 14px; }
+        td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 14px; }
