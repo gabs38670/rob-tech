@@ -2,25 +2,57 @@
 import { Activity, LayoutDashboard, Users, Search, Bell, CheckCircle2Icon, AlertCircle } from "lucide-react";
 import{BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell} from 'recharts';
 import {COLORS, dataProducao, dataStatus, maquinas} from '../data/data';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   // Aqui é a onde estou guardando o que o usuário está digitando
   const [busca, setBusca] = useState('')
+  // Estado para criar efeito de loading
+  const [loading, setLoading] = useState(false);
+
+  // Estados para armazenar os dados das máquinas
+  const [resultado, setResultado] = useState([]);
 
   const maquinasFiltradas = filtrarMaquinasPorNome();
 
   function filtrarMaquinasPorNome(){
     return maquinas.filter((item) => item.nome.toLocaleLowerCase().includes(busca.toLocaleLowerCase()))
   }
-  console.log(maquinasFiltradas)
 
-  // const consumoEnergia = filtrarMaquinasPorConsumo();
-  // function filtrarMaquinasPorConsumo(){
-  //   return maquinas.filter((item) => item.consumo)
-  // }
-  // console.log(consumoEnergia)
+console.log(busca.length)
+ 
+  useEffect(() => {
+    setLoading(true);
 
+    const timeout = setTimeout(()=> {
+      const dados_filtrados = filtrarMaquinasPorNome()
+      setResultado(dados_filtrados)
+      setLoading(false)
+    }, 2000)
+    return () => clearTimeout(timeout)
+  }, [busca])
+
+const [contador, setContador] = useState(0);
+
+useEffect(() => {
+  if (!busca.trim()) return;
+
+  // 2. Cria o timer
+  const timeout = setTimeout(() => {
+    const dados_filtrados = filtrarMaquinasPorNome();
+    setResultado(dados_filtrados);
+    setLoading(false);
+
+    setContador((prev) => {
+      const novoTotal = prev + 1;
+      console.log(` Esta é a busca nº: ${novoTotal}`);
+      return novoTotal;
+    });
+
+  }, 4000);
+
+  return () => clearTimeout(timeout);
+}, [busca]);
 
   return (
     <div className="app-container">
@@ -170,6 +202,14 @@ export default function Home() {
                   </ResponsiveContainer>           
 
                 </div>
+              </div>
+              {loading && <p>Buscando Dados...</p>}
+              {!loading && resultado.length === 0 && (
+                <p>Nenhum processo encontrado</p>
+              )}
+              <div style={{display:'flex', gap:'0.30rem'}}>
+                <p>Total de Buscas:</p>
+                {contador}
               </div>
           </div>
         </div>
